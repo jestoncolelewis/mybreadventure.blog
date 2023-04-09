@@ -1,45 +1,41 @@
 const posts = document.querySelector('.posts')
+const post = document.createElement('div')
+post.setAttribute('class', 'post')
 const title = document.createElement('h2')
 const excerpt = document.createElement('p')
 const image = document.createElement('img')
 posts.append(title)
 
 function get_title(content) {
-    let id = 'id="title">';
-    let len = id.length;
-    let start = content.search(id) + len;
-    let sub = content.substring(start+len);
-    let end = sub.search('<') + start + len;
-    return content.substring(start, end);
+    return content.Item.post_title.S;
 }
 
 function get_excerpt(content) {
-    let id = 'id="excerpt">';
-    let len  = id.length;
-    let start = content.search(id) + len;
-    let sub = content.substring(start+len);
-    let end = sub.search('<') + start + len;
-    return content.substring(start, end);
+    return content.Item.post_excerpt.S;
 }
 
 function get_image(content) {
-    let src = ''
-    return src
+    return content.Item.post_feature.S
 }
 
-let url = './posts/2021/06/27/The-Great-Yeast-Failure-of-2021.html';
+let url = 'https://t2646lcfvh.execute-api.us-west-2.amazonaws.com/retrieveTest';
 fetch(url)
 .then((response) => response.text())
 .then((data) => {
-    // title
-    title.textContent = get_title(data);
-    posts.append(title);
+    let response = JSON.parse(data)
 
-    // excerpt
-    excerpt.textContent = get_excerpt(data);
-    posts.append(excerpt);
+    // post
+    posts.append(post)
 
     // image
-    image.src = get_image(data)
-    posts.append(image)
+    image.src = get_image(response)
+    post.append(image)
+
+    // title
+    title.textContent = get_title(response);
+    post.append(title);
+
+    // excerpt
+    excerpt.textContent = get_excerpt(response);
+    post.append(excerpt);
 })
