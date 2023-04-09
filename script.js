@@ -1,6 +1,7 @@
 const posts = document.querySelector('.posts')
 const title = document.createElement('h2')
 const excerpt = document.createElement('p')
+const image = document.createElement('img')
 posts.append(title)
 
 function get_title(content) {
@@ -21,7 +22,10 @@ function get_excerpt(content) {
     return content.substring(start, end);
 }
 
-console.log('.' + location.pathname);
+function get_image(content) {
+    let src = ''
+    return src
+}
 
 let url = './posts/2021/06/27/The-Great-Yeast-Failure-of-2021.html';
 fetch(url)
@@ -36,4 +40,6 @@ fetch(url)
     posts.append(excerpt);
 
     // image
+    image.src = get_image(data)
+    posts.append(image)
 })
