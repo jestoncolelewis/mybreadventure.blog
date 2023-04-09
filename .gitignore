@@ -5,6 +5,7 @@
 
 # my files
 *.DS_Store
+*test.http
 
 # User-specific files
 *.rsuser
