@@ -27,10 +27,18 @@ def build_lambda_bucket(name, path, file):
 
 # build s3 for website
 def build_web_bucket(name):
+    try:
+        ...
+    except botocore.exceptions.ClientError as err:
+        print('{}'.format(err.response['Error']['Message']))
     return
 
 # iam creator
 def build_iam(name):
+    try:
+        ...
+    except botocore.exceptions.ClientError as err:
+        print('{}'.format(err.response['Error']['Message']))
     return
 
 # build lambda
