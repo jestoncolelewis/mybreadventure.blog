@@ -25,7 +25,7 @@ attributes = [{"AttributeName": "primary-key", "AttributeType": "N"}]
 # lambda variables
 lang = "python3.9"
 
-iam = "arn:aws:iam::706391136734:role/service-role/microRole"
+iam = build_iam(name)
 
 code = [name, key]
 
