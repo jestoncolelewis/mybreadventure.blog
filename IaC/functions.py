@@ -4,6 +4,7 @@ import botocore.exceptions
 s3 = boto3.client('s3')
 s3r = boto3.resource('s3')
 lamb = boto3.client('lambda')
+iam = ...
 api = boto3.client('apigatewayv2')
 dynamo = boto3.client('dynamo')
 
@@ -25,7 +26,11 @@ def build_lambda_bucket(name, path, file):
     return file
 
 # build s3 for website
-def build_web_bucket():
+def build_web_bucket(name):
+    return
+
+# iam creator
+def build_iam(name):
     return
 
 # build lambda
