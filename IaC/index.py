@@ -4,9 +4,14 @@ dynamo = boto3.client('dynamodb')
 dynamor = boto3.resource('dynamodb')
 table = dynamor.Table('breadtest') # type: ignore
 
-def lambda_handler():
+def lambda_handler(event, context):
     response = ''
-    posts = table.item_count
+    if event.get('') == ...:
+        posts = 12
+    elif event.get('') == ...:
+        posts = 8
+    else:
+        posts = table.item_count
 
     for i in range(posts):
         item = dynamo.get_item(
