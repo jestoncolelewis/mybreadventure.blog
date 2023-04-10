@@ -15,7 +15,7 @@ key = build_lambda_bucket(name, path, file)
 # s3 web variables
 
 
-build_web_bucket(name)
+build_web_bucket(name, path, file)
 
 # dynamo variables
 keys = [{"AttributeName": "primary-key", "KeyType": "HASH"}]
