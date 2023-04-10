@@ -18,7 +18,7 @@ fetch(url)
     .then((data) => {
         const nosngl = data.replaceAll("'", '"');
         const items = nosngl.split('^*^');
-        for (let i = 0; i < items.length; i++) {
+        for (let i = items.length - 1; i >= 0; i--) {
             const post = document.createElement('div')
             post.setAttribute('class', 'post')
             const title = document.createElement('h2')
