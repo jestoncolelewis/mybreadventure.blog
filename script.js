@@ -1,4 +1,4 @@
-const posts = document.querySelector('.posts')
+const posts = document.querySelector('.posts');
 
 function get_title(content) {
     return content.Item.post_title.S;
@@ -18,12 +18,12 @@ fetch(url)
     .then((data) => {
         const items = data.replaceAll("'", '"').split('^*^');
         for (let i = items.length - 1; i >= 0; i--) {
-            const post = document.createElement('div')
-            post.setAttribute('class', 'post')
-            const title = document.createElement('h2')
-            const excerpt = document.createElement('p')
-            const image = document.createElement('img')
-            posts.append(title)
+            const post = document.createElement('div');
+            post.setAttribute('class', 'post');
+            const title = document.createElement('h2');
+            const excerpt = document.createElement('p');
+            const image = document.createElement('img');
+            posts.append(title);
             
             const response = JSON.parse(items[i]);
 
@@ -41,5 +41,5 @@ fetch(url)
             // excerpt
             excerpt.textContent = get_excerpt(response);
             post.append(excerpt);
-        }
-    })
+        };
+    });
