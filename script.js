@@ -16,8 +16,7 @@ const url = 'https://t2646lcfvh.execute-api.us-west-2.amazonaws.com/retrieveTest
 fetch(url)
     .then((response) => response.text())
     .then((data) => {
-        const nosngl = data.replaceAll("'", '"');
-        const items = nosngl.split('^*^');
+        const items = data.replaceAll("'", '"').split('^*^');
         for (let i = items.length - 1; i >= 0; i--) {
             const post = document.createElement('div')
             post.setAttribute('class', 'post')
@@ -26,7 +25,6 @@ fetch(url)
             const image = document.createElement('img')
             posts.append(title)
             
-            console.log(items[i]);
             const response = JSON.parse(items[i]);
 
             // post
