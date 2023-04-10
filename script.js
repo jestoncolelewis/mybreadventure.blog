@@ -15,21 +15,24 @@ function get_excerpt(content) {
 }
 
 function get_image(content) {
-    return content.Item.post_feature.S
+    return content.Item.post_feature.S;
 }
 
 let url = 'https://t2646lcfvh.execute-api.us-west-2.amazonaws.com/retrieveTest';
 fetch(url)
 .then((response) => response.text())
 .then((data) => {
-    let response = JSON.parse(data)
+    let items = data.split('", "');
+    let item = items[0]
+    console.log(item);
+    let response = JSON.parse(item);
 
     // post
-    posts.append(post)
+    posts.append(post);
 
     // image
-    image.src = get_image(response)
-    post.append(image)
+    image.src = get_image(response);
+    post.append(image);
 
     // title
     title.textContent = get_title(response);
