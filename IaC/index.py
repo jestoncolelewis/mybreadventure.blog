@@ -4,14 +4,15 @@ dynamo = boto3.client('dynamodb')
 dynamor = boto3.resource('dynamodb')
 table = dynamor.Table('breadtest') # type: ignore
 
-# request a sum of items and count backwards from the the total for the most recent item
-def lambda_handler(event, context):
-    posts = table.item_count('breadtest')
-    print(posts)
+def lambda_handler():
+    response = []
+    posts = 3 # table.item_count
 
-    response = dynamo.get_item(
-        Key = {'post_num':{'N':'0'}},
-        TableName = 'breadtest'
-    )
+    for i in range(posts):
+        item = dynamo.get_item(
+            Key = {'post_num':{'N':'{}'.format(i)}},
+            TableName = 'breadtest'
+        )
+        response.append(str(item))
 
     return response
