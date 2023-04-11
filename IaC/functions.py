@@ -4,7 +4,7 @@ import botocore.exceptions
 s3 = boto3.client('s3')
 s3r = boto3.resource('s3')
 lamb = boto3.client('lambda')
-iam = boto3.client('iam') # check availability
+iam = boto3.client('iam')
 api = boto3.client('apigatewayv2')
 dynamo = boto3.client('dynamo')
 
@@ -37,15 +37,18 @@ def build_web_bucket(name, path, file):
         s3r.meta.client.upload_file(path, name, file) # type: ignore
     except botocore.exceptions.ClientError as err:
         print('{}'.format(err.response['Error']['Message']))
-    return
 
 # iam creator
 def build_iam(name):
     try:
-        response = iam.create_role()
+        response = iam.create_role(
+            RoleName = name + '-role',
+            AssumeRolePolicyDocument = ...,
+            Path = '/'
+        )
     except botocore.exceptions.ClientError as err:
         print('{}'.format(err.response['Error']['Message']))
-    return response.get('IamArn')
+    return response.get('Arn')
 
 # build lambda
 def build_lambda(name, lang, role, code, desc):
