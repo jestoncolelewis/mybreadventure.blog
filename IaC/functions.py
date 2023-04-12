@@ -17,7 +17,7 @@ def build_lambda_bucket(name, path, file):
                 'LocationConstraint': 'us-west-2'
             }
         )
-        s3r.meta.client.upload_file(path, name, file) # type: ignore
+        s3r.upload_file(path, name, file) # type: ignore
     except botocore.exceptions.ClientError as err:
         print('{}'.format(err.response['Error']['Message']))
     response = s3.list_objects(Bucket = name)
@@ -26,15 +26,24 @@ def build_lambda_bucket(name, path, file):
     return file
 
 # build s3 for website
-def build_web_bucket(name, path, file):
+def build_web_bucket(name, path, files):
     try:
         s3.create_bucket(
+            ACL = 'public-read',
             Bucket = name,
             CreateBucketConfiguration = {
                 'LocationConstraint': 'us-west-2'
             }
         )
-        s3r.meta.client.upload_file(path, name, file) # type: ignore
+        s3.create_bucket(
+            Bucket = 'www.' + name,
+            CreateBucketConfiguration = {
+                'LocationConstraint': 'us-west-2'
+            }
+        )
+        for file in files:
+            path = path + '/' + file
+            s3r.upload_file(path, name, file) # type: ignore
     except botocore.exceptions.ClientError as err:
         print('{}'.format(err.response['Error']['Message']))
 
@@ -43,12 +52,12 @@ def build_iam(name):
     try:
         response = iam.create_role(
             RoleName = name + '-role',
-            AssumeRolePolicyDocument = ...,
-            Path = '/'
+            AssumeRolePolicyDocument = {...},
+            Path = '/service-role/'
         )
     except botocore.exceptions.ClientError as err:
         print('{}'.format(err.response['Error']['Message']))
-    return response.get('Arn')
+    return response.get('Arn') # type: ignore
 
 # build lambda
 def build_lambda(name, lang, role, code, desc):
