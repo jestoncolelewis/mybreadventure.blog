@@ -6,6 +6,7 @@
 # my files
 *.DS_Store
 *test.http
+*test.ipynb
 
 # User-specific files
 *.rsuser
