@@ -15,19 +15,19 @@ key = build_lambda_bucket(name, path, file)
 # s3 web variables
 web_path = os.path.abspath(os.path.join(path, os.pardir))
 
-files = [] # load all desired files and folders in web_path
+tree = os.walk('..')
+to_upload = {}
 
-with os.scandir('..') as it:
-    for entry in it:
-        if not entry.name.startswith('.') and entry.is_file():
-            if not entry.name.endswith('.md'):
-                if not entry.name.endswith('.http'):
-                    files.append(entry.name)
-        if not entry.name.startswith('.') and entry.is_dir():
-            if not entry.name.startswith('IaC'):
+for path in tree:
+    with os.scandir(path[0]) as it:
+        files = []
+        for entry in it:
+            if not entry.name.startswith('.') and not entry.name.endswith('.md') and not entry.name.endswith('.http') and not entry.name.endswith('.py') and not entry.name.endswith('ipynb') and not path[0].startswith('../.') and entry.is_file():
                 files.append(entry.name)
+        if not path[0].startswith('../.') and not path[0].startswith('../IaC') and len(files) != 0:
+            to_upload[path[0]] = files
 
-build_web_bucket(name, web_path, files)
+build_web_bucket(name, web_path, to_upload)
 
 # dynamo variables
 keys = [{"AttributeName": "post-num", "KeyType": "HASH"}]
