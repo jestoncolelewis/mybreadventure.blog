@@ -26,7 +26,7 @@ def build_lambda_bucket(name, path, file):
     return file
 
 # build s3 for website
-def build_web_bucket(name, path, files):
+def build_web_bucket(name, paths, objects):
     try:
         s3.create_bucket(
             ACL = 'public-read',
@@ -41,9 +41,15 @@ def build_web_bucket(name, path, files):
                 'LocationConstraint': 'us-west-2'
             }
         )
-        for file in files:
-            path = path + '/' + file
-            s3r.upload_file(path, name, file) # type: ignore
+        for item in objects:
+            files = paths[item]
+            for file in files:
+                path = item + '/' + file
+                s3.put_object(
+                    Body=file,
+                    Bucket=name,
+                    Key=path[3:]
+                    )
     except botocore.exceptions.ClientError as err:
         print('{}'.format(err.response['Error']['Message']))
 
