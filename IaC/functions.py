@@ -7,6 +7,7 @@ lamb = boto3.client('lambda')
 iam = boto3.client('iam')
 api = boto3.client('apigatewayv2')
 dynamo = boto3.client('dynamo')
+route53 = boto3.client('route53')
 
 # build s3 for lambda
 def build_lambda_bucket(name, path, file):
@@ -111,5 +112,12 @@ def build_dynamo(name, keys, attdef):
                 'WriteCapacityUnits': 5
             }
         )
+    except botocore.exceptions.ClientError as err:
+        print('{}'.format(err.response['Error']['Message']))
+
+# build hosted zone
+def build_r53(name):
+    try:
+        ...
     except botocore.exceptions.ClientError as err:
         print('{}'.format(err.response['Error']['Message']))
