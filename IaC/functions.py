@@ -77,7 +77,7 @@ def build_lambda(name, lang, role, code, desc):
                 'S3Key': code[1]
             },
             Description = desc,
-            FunctionName = name + '-function',
+            FunctionName = name.replace('.', 'dot') + '-function',
             Handler = 'index.lambda_handler'
         )
         return response.get('FunctionArn')
