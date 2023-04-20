@@ -27,7 +27,7 @@ def build_lambda_bucket(name, path, file):
     return file
 
 # build s3 for website
-def build_web_bucket(name, paths, objects):
+def build_web_bucket(name, objects):
     try:
         s3.create_bucket(
             ACL = 'public-read',
@@ -43,14 +43,15 @@ def build_web_bucket(name, paths, objects):
             }
         )
         for item in objects:
-            files = paths[item]
+            files = objects[item]
             for file in files:
-                path = item + '/' + file
-                s3.put_object(
-                    Body=file,
-                    Bucket=name,
-                    Key=path[3:]
-                    )
+                if item[3:] == '':
+                    d = item + '/' + file
+                    s3.upload_file(d, name, file)
+                else:    
+                    f = item[3:] + '/' + file
+                    d = item + '/' + file
+                    s3.upload_file(d, name, f)
     except botocore.exceptions.ClientError as err:
         print('{}'.format(err.response['Error']['Message']))
 

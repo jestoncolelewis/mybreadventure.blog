@@ -27,7 +27,7 @@ for path in tree:
         if not path[0].startswith('../.') and not path[0].startswith('../IaC') and len(files) != 0:
             to_upload[path[0]] = files
 
-build_web_bucket(name, web_path, to_upload)
+build_web_bucket(name, to_upload)
 
 # dynamo variables
 keys = [{"AttributeName": "post-num", "KeyType": "HASH"}]
