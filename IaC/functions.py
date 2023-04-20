@@ -2,7 +2,6 @@ import boto3
 import botocore.exceptions
 
 s3 = boto3.client('s3')
-s3r = boto3.resource('s3')
 lamb = boto3.client('lambda')
 iam = boto3.client('iam')
 api = boto3.client('apigatewayv2')
@@ -18,7 +17,7 @@ def build_lambda_bucket(name, path, file):
                 'LocationConstraint': 'us-west-2'
             }
         )
-        s3r.upload_file(path, name, file) # type: ignore
+        s3.upload_file(path, name, file) # type: ignore
     except botocore.exceptions.ClientError as err:
         print('{}'.format(err.response['Error']['Message']))
     response = s3.list_objects(Bucket = name)
