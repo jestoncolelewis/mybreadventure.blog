@@ -4,7 +4,6 @@ import botocore.exceptions
 s3 = boto3.client('s3')
 lamb = boto3.client('lambda')
 iam = boto3.client('iam')
-with open('policy.json') as f: policy = f.read()
 api = boto3.client('apigatewayv2')
 dynamo = boto3.client('dynamo')
 route53 = boto3.client('route53')
@@ -57,11 +56,20 @@ def build_web_bucket(name, objects):
 
 # iam creator
 def build_iam(name):
+    with open('policy.json') as f: policy = f.read()
+    with open('role.json') as f: role = f.read()
     try:
-        response = iam.create_role(
+        policy_response = iam.create_policy(
+            PolicyName = name + 'policy',
+            PolicyDocument = policy
+        )
+        role_response = iam.create_role(
             RoleName = name + '-role',
-            AssumeRolePolicyDocument = policy,
-            Path = '/service-role/'
+            AssumeRolePolicyDocument = role
+        )
+        iam.attach_role_policy(
+            RoleName = role_response['Role']['RoleName'],
+            PolicyArn = policy_response['Policy']['Arn']
         )
     except botocore.exceptions.ClientError as err:
         print('{}'.format(err.response['Error']['Message']))
