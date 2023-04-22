@@ -4,6 +4,7 @@ import botocore.exceptions
 s3 = boto3.client('s3')
 lamb = boto3.client('lambda')
 iam = boto3.client('iam')
+with open('policy.json') as f: policy = f.read()
 api = boto3.client('apigatewayv2')
 dynamo = boto3.client('dynamo')
 route53 = boto3.client('route53')
@@ -17,7 +18,7 @@ def build_lambda_bucket(name, path, file):
                 'LocationConstraint': 'us-west-2'
             }
         )
-        s3.upload_file(path, name, file) # type: ignore
+        s3.upload_file(path, name, file)
     except botocore.exceptions.ClientError as err:
         print('{}'.format(err.response['Error']['Message']))
     response = s3.list_objects(Bucket = name)
@@ -59,7 +60,7 @@ def build_iam(name):
     try:
         response = iam.create_role(
             RoleName = name + '-role',
-            AssumeRolePolicyDocument = {...},
+            AssumeRolePolicyDocument = policy,
             Path = '/service-role/'
         )
     except botocore.exceptions.ClientError as err:
