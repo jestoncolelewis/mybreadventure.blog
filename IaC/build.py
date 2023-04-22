@@ -13,8 +13,6 @@ path = path + "/" + file
 key = build_lambda_bucket(name, path, file)
 
 # s3 web variables
-web_path = os.path.abspath(os.path.join(path, os.pardir))
-
 tree = os.walk('..')
 to_upload = {}
 
